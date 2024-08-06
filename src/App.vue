@@ -2,10 +2,10 @@
   <div class="todoListBox">
     <Header
         :searchQuery="searchQuery"
-        :handleAllSelect="handleAllSelect"
-        :handleAdd="handleAdd"
-        :handleDeleteSelected="handleDeleteSelected"
-    />
+        @update:searchQuery="searchQuery = $event"
+    :handleAllSelect="handleAllSelect"
+    :handleAdd="handleAdd"
+    :handleDeleteSelected="handleDeleteSelected" />
     <TodoList
         :filteredTodoList="filteredTodoList"
         :handleSelect="handleSelect"
@@ -100,8 +100,11 @@ export default {
     },
     // 生成随机ID
     randomID() {
-      return Number(Math.random().toString().substr(2, 0) + Date.now()).toString(10)
+      const randomPart = Math.random().toString().slice(2); // 去掉前两位，保留小数部分
+      const timestampPart = Date.now().toString();
+      return randomPart + timestampPart;
     },
+
     // 本地存储
     storage() {
       window.localStorage.setItem('listTodo1', JSON.stringify(this.todoList))
